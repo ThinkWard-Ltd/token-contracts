@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -7,11 +7,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SotaToken is ERC20, ERC20Capped, ERC20Burnable, Ownable {
 
-    uint public allowTransferOn = 1617123600; // 2021-03-31 0:00:00 GMT+7 timezone
+    uint public allowTransferOn = 1617123600; // 2021-12-31 0:00:00 GMT+7 timezone
     mapping (address => bool ) public whiteListTransfer;
 
     /**
-     * @dev Constructor function of Sota Token
+     * @dev Constructor function of BitFinance Token
      * @dev set name, symbol and decimal of token
      * @dev mint totalSupply (cap) to deployer
      */
@@ -38,7 +38,7 @@ contract SotaToken is ERC20, ERC20Capped, ERC20Burnable, Ownable {
 
     /**
      * @dev Admin can set allowTransferOn to   
-     * @dev any time before 2021-03-31 0:00:00 GMT+7
+     * @dev any time before 2021-12-31 0:00:00 GMT+7
      */
     function adminSetTime(uint _newTransferTime) public onlyOwner returns (bool) {
         require(block.timestamp < allowTransferOn && _newTransferTime < allowTransferOn, "Invalid-time");

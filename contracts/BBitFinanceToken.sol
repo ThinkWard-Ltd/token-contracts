@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.7.0;
+pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract BSotaToken is ERC20("SOTA", "SOTA"), ERC20Burnable, Ownable {
+contract BSotaToken is ERC20("BitFinance", "BitFinance"), ERC20Burnable, Ownable {
     using SafeMath for uint;
     uint public FEE = 10;
     uint public feeCollected;

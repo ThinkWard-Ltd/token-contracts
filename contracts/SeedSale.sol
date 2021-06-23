@@ -9,7 +9,7 @@ import "./interfaces/IUniswapV2Router02.sol";
 contract SeedSale is SaleManager {
     using SafeMath for uint;
     using SafeERC20 for ERC20;
-    uint public constant ZOOM_SOTA = 10 ** 18;
+    uint public constant ZOOM_BitFinance = 10 ** 18;
     uint public constant ZOOM_USDT = 10 ** 6;
     uint public price =  10 ** 5; // price / zoom = 0.1
     uint public MIN_AMOUNT = 1000 * 10 ** 6; // 1 usdt
@@ -18,7 +18,7 @@ contract SeedSale is SaleManager {
     uint public endTime = 1609433999;
     address public usdt = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
     address public uniRouterV2 = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
-    address public sota;
+    address public BitFinance;
     address public hot_wallet;
     mapping (address => uint) public totalBuy; 
     mapping (address => bool) public whiteListSigner;
@@ -34,7 +34,7 @@ contract SeedSale is SaleManager {
         address _hot_wallet
     ) 
         public {
-        sota = _sota;
+        BitFinance = _sota;
         hot_wallet = _hot_wallet;
         whiteListSigner[msg.sender] = true;
     }
@@ -43,14 +43,14 @@ contract SeedSale is SaleManager {
         return (MIN_AMOUNT <= newAmount && newAmount <= MAX_AMOUNT);
     }
     /**
-     * @dev calculate sota token amount
+     * @dev calculate BitFinance token amount
      * @param usdtAmount amount USDT user deposit to buy
      */
     function calSota(uint usdtAmount) private returns (uint) {
-        return usdtAmount.mul(ZOOM_SOTA).div(price);
+        return usdtAmount.mul(ZOOM_BitFinance).div(price);
     }
     /**
-     * @dev allow user buy SOTA with USDT
+     * @dev allow user buy BitFinance with USDT
      * @param usdtAmount amount USDT user deposit to buy
      */
     function buyWithUSDT(
@@ -62,7 +62,7 @@ contract SeedSale is SaleManager {
         //transfer USDT to hot_wallet directly
         ERC20(usdt).safeTransferFrom(msg.sender, hot_wallet, usdtAmount);
         uint sotaAmount = calSota(usdtAmount);
-        IERC20(sota).transfer(msg.sender, sotaAmount);
+        IERC20(BitFinance).transfer(msg.sender, sotaAmount);
         totalBuy[msg.sender] = totalBuy[msg.sender].add(usdtAmount);
         emit Buy(msg.sender, usdtAmount, sotaAmount);
         return true;
@@ -77,7 +77,7 @@ contract SeedSale is SaleManager {
         return path;
     }
     /**
-     * @dev allow user buy SOTA with ETH, swap ETH to USDT though uniswap
+     * @dev allow user buy BitFinance with ETH, swap ETH to USDT though uniswap
      * @param expectedUSDT is min amount USDT user expect when swap from ETH
      * @param deadline is deadline of transaction can be process
      */
@@ -95,10 +95,10 @@ contract SeedSale is SaleManager {
             hot_wallet,
             deadline
         ); // amounts[0] = WETH, amounts[1] = USDT
-        // calculate sota token amount from usdt received
+        // calculate BitFinance token amount from usdt received
         require(isValidAmount(amounts[1]), "Invalid-amount-USDT");
         uint sotaAmount = calSota(amounts[1]); //
-        IERC20(sota).transfer(msg.sender, sotaAmount);
+        IERC20(BitFinance).transfer(msg.sender, sotaAmount);
         totalBuy[msg.sender] = totalBuy[msg.sender].add(amounts[1]);
         emit Buy(msg.sender, amounts[1], sotaAmount);
         return true;
